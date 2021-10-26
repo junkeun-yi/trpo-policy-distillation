@@ -24,9 +24,10 @@ class Policy(nn.Module):
         self.min_log_std = math.log(min_std)
         self.num_layers = len(hidden_sizes) + 1
 
-        self.is_disc_action = False
+        self.is_disc_action = True #FIXME: HARDCODED FOR ATARI!!ßßß
 
         layer_sizes = (input_size,) + hidden_sizes
+        print("!@(", layer_sizes)
         for i in range(1, self.num_layers):
             self.add_module('layer{0}'.format(i),
                             nn.Linear(layer_sizes[i - 1], layer_sizes[i]))
@@ -39,8 +40,13 @@ class Policy(nn.Module):
     def forward(self, input, params=None):
         if params is None:
             params = OrderedDict(self.named_parameters())
-        output = input
+        # print(input.shape)
+        output = input.double()
+        # print(output.shape)
         for i in range(1, self.num_layers):
+            # print(params['layer{0}.weight'.format(i)].shape)
+            # print(params['layer{0}.bias'.format(i)].shape)
+            # print(output.shape)
             output = F.linear(output,
                               weight=params['layer{0}.weight'.format(i)],
                               bias=params['layer{0}.bias'.format(i)])

@@ -37,7 +37,8 @@ def trpo(env, args):
     torch.set_default_dtype(dtype)
     # env = gym.make(args.env_name)
     num_inputs = env.observation_space.shape[0]
-    num_actions = env.action_space.shape[0]
+    # num_actions = env.action_space.shape[0]
+    num_actions = env.action_space.n
     env.seed(args.seed)
     torch.manual_seed(args.seed)
     policy_net = Policy(num_inputs, num_actions, hidden_sizes = (args.hidden_size,) * args.num_layers)

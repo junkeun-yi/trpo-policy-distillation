@@ -43,7 +43,8 @@ def train_teachers():
     return envs, teacher_policies
 
 def main(args):
-    ray.init(num_cpus=args.num_workers, num_gpus=1)
+    # ray.init(num_cpus=args.num_workers, num_gpus=1)
+    ray.init(num_cpus=args.num_workers, num_gpus=0)
     # policy and envs for sampling
     np.random.seed(args.seed)
     torch.manual_seed(args.seed)
@@ -148,7 +149,7 @@ if __name__ == '__main__':
                         help='interval between training status logs (default: 10)')
     parser.add_argument('--device', type=str, default='cpu',
                         help='set the device (cpu or cuda)')
-    parser.add_argument('--num-workers', type=int, default=10,
+    parser.add_argument('--num-workers', type=int, default=1,
                         help='number of workers for parallel computing')
     parser.add_argument('--num-teacher-episodes', type=int, default=10, metavar='N',
                         help='num of teacher training episodes (default: 100)')
